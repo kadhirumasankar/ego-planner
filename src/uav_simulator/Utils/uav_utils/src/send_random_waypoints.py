@@ -5,7 +5,6 @@ from geometry_msgs.msg import PoseStamped
 import random
 
 
-
 class WaypointFeed(object):
 
     def __init__(self):
