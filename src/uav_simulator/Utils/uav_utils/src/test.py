@@ -2,6 +2,8 @@
 
 import rospy
 from geometry_msgs.msg import PoseStamped
+import random
+
 
 
 class WaypointFeed(object):
@@ -10,14 +12,16 @@ class WaypointFeed(object):
         print('[INFO] Initializing object...')
         # COMBAK: temporarily setting queue_size to 1
         self.waypoint_pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
+        self.map_x_size = rospy.get_param("/pcl_render_node/map/x_size", 40.0)
+        self.map_y_size = rospy.get_param("/pcl_render_node/map/y_size", 40.0)
 
     def publish_waypoint(self):
         waypoint_msg = PoseStamped()
         waypoint_msg.header.seq = 1
         waypoint_msg.header.stamp = rospy.Time.now()
         waypoint_msg.header.frame_id = "world"
-        waypoint_msg.pose.position.x = 10.1873664856
-        waypoint_msg.pose.position.y = -13.2499380112
+        waypoint_msg.pose.position.x = random.uniform(self.map_x_size/-2, self.map_x_size/2)
+        waypoint_msg.pose.position.y = random.uniform(self.map_y_size/-2, self.map_y_size/2)
         waypoint_msg.pose.position.z = 0
         waypoint_msg.pose.orientation.w = 1.0
         print(waypoint_msg)
@@ -29,7 +33,7 @@ def main():
     print('[INFO] Running file')
     rospy.init_node('waypoint_feed_node', anonymous=True)
     waypoint_feed_object = WaypointFeed()
-    duration = rospy.Duration(3)
+    duration = rospy.Duration(30)
     while not rospy.is_shutdown():
         waypoint_feed_object.publish_waypoint()
         rospy.sleep(duration)
