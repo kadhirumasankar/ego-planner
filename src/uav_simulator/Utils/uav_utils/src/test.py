@@ -13,7 +13,7 @@ class WaypointFeed(object):
         # COMBAK: temporarily setting queue_size to 1
         self.waypoint_pub = rospy.Publisher('/move_base_simple/goal',
                                             PoseStamped,
-                                            squeue_size=1)
+                                            queue_size=1)
         # Getting the x and y dimensions of the map to use for the random
         # waypoint
         self.map_x_size = rospy.get_param("/pcl_render_node/map/x_size", 40.0)
