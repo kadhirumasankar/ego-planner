@@ -10,6 +10,8 @@ class WaypointFeed(object):
         print('[INFO] Initializing object...')
         # COMBAK: temporarily setting queue_size to 1
         self.waypoint_pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
+
+    def publish_waypoint(self):
         waypoint_msg = PoseStamped()
         waypoint_msg.header.seq = 1
         waypoint_msg.header.stamp = rospy.Time.now()
@@ -20,17 +22,18 @@ class WaypointFeed(object):
         waypoint_msg.pose.orientation.w = 1.0
         print(waypoint_msg)
         self.waypoint_pub.publish(waypoint_msg)
-        print('[INFO] Message published')
+        print('[INFO] Waypoint published')
 
 
 def main():
     print('[INFO] Running file')
     rospy.init_node('waypoint_feed_node', anonymous=True)
     waypoint_feed_object = WaypointFeed()
-    try:
-        rospy.spin()
-    except KeyboardInterrupt:
-        print("Shutting down")
+    duration = rospy.Duration(3)
+    while not rospy.is_shutdown():
+        waypoint_feed_object.publish_waypoint()
+        rospy.sleep(duration)
+    print("Shutting down")
     print('[INFO] Finishing running file')
 
 
