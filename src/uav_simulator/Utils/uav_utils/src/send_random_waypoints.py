@@ -43,7 +43,7 @@ def main():
     print('[INFO] Running file')
     rospy.init_node('waypoint_feed_node', anonymous=True)
     waypoint_feed_object = WaypointFeed()
-    # COMBAK: See if there is a way to make it repeat every time EXEC_STATE =
+    # TODO: See if there is a way to make it repeat every time EXEC_STATE =
     # WAIT_TARGET instead of a fixed time
     duration = rospy.Duration(30)
     while not rospy.is_shutdown():
